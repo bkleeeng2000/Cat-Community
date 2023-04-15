@@ -11,6 +11,7 @@ import * as process from 'process';
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
+      // secret: 'secret',
       signOptions: { expiresIn: '1y' }
     }),
     forwardRef(() => CatsModule)
