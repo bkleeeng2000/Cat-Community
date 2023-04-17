@@ -15,6 +15,8 @@ import { LoginRequestDto } from '../auth/dto/login.request.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt.gaurd';
 import { CurrentUser } from '../common/decorators/user.decorator';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from '../common/utils/multer.options';
+import { Cat } from './cats.schema';
 
 @Controller('cats')
 export class CatsController {
@@ -52,9 +54,14 @@ export class CatsController {
   }
 
   @ApiOperation({ summary: '고양이 이미지 업로드' })
-  @UseInterceptors(FilesInterceptor('image'))
-  @Post('upload/cats')
-  uploadCatImg(@UploadedFiles() images: Array<Express.Multer.File>) {
-    return 'uploadImg';
+  @UseInterceptors(FilesInterceptor('image', 10, multerOptions('cats')))
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  uploadCatImg(
+    @UploadedFiles() images: Array<Express.Multer.File>,
+    @CurrentUser() cat: Cat
+  ) {
+    //TODO 유동적으로 변경 가능하게끔 수정해야 함
+    return this.catsService.uploadImg(cat, images);
   }
 }
