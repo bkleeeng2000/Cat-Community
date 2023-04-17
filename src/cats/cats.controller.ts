@@ -64,4 +64,10 @@ export class CatsController {
     //TODO 유동적으로 변경 가능하게끔 수정해야 함
     return this.catsService.uploadImg(cat, images);
   }
+
+  @ApiOperation({summary: '모든 고양이 정보 가져오기'})
+  @Get('all')
+  getAllCat(){
+    return this.catsService.getAllCat();
+  }
 }
