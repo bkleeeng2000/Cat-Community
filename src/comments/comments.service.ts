@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommentCreateDto } from './dto/comment.create.dto';
 import { CatsRepository } from '../cats/cats.repository';
 import { Model } from 'mongoose';
