@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CommentCreateDto } from './dto/comment.create.dto';
+import { CatsRepository } from '../cats/cats.repository';
+import { Model } from 'mongoose';
+import { Comment } from './comments.schema';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CommentsService {
-  // constructor(private readonly ) {}
+  constructor(
+    @InjectModel(Comment.name) private readonly commentModel: Model<Comment>,
+    private readonly catsRepository: CatsRepository
+  ) {}
 
   async getAllComments() {
     return Promise.resolve(undefined);
