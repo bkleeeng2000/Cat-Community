@@ -22,6 +22,12 @@ export class CommentsService {
   }
 
   async getCommentById(id: string) {
+    try {
+      const comment = await this.commentModel.findById(id);
+      return comment;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
     return Promise.resolve(undefined);
   }
 
