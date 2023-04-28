@@ -13,7 +13,12 @@ export class CommentsService {
   ) {}
 
   async getAllComments() {
-    return Promise.resolve(undefined);
+    try {
+      const comments = await this.commentModel.find();
+      return comments;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   async getCommentById(id: string) {
@@ -21,6 +26,31 @@ export class CommentsService {
   }
 
   async createComment(id: string, comment: CommentCreateDto) {
-    return `createComment id: ${id}, comment: ${comment.contents}`;
+    try {
+      const targetCat = await this.catsRepository.findCatByIdWithoutPassword(
+        id
+      );
+      const { contents, author } = comment;
+      const validatedAuthor =
+        await this.catsRepository.findCatByIdWithoutPassword(author);
+      const newComment = new this.commentModel({
+        target: targetCat._id,
+        contents,
+        author: validatedAuthor._id
+      });
+      return await newComment.save();
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  async likeComment(id: string) {
+    try {
+      const comment = await this.commentModel.findById(id);
+      comment.likeCount += 1;
+      return await comment.save();
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 }

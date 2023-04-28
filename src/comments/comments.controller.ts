@@ -8,7 +8,7 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @ApiOperation({ summary: 'Get all comments' })
-  @Get('all')
+  @Get('')
   async getAllComments() {
     return await this.commentsService.getAllComments();
   }
